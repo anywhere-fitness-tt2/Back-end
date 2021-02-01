@@ -2,7 +2,7 @@ const cleaner = require('knex-cleaner')
 
 function cleanTables(knex) {
   return cleaner
-    .cleaner(knex, {
+    .clean(knex, {
       mode: 'truncate',
       restartIdentity: true,
       ignoreTables: ['knex_migrations', 'knex_migrations_lock']
