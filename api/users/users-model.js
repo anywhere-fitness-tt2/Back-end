@@ -1,6 +1,6 @@
 const db = require('../../database/dbConfig')
 
-module.exports = {getUsers, add, getById, getBy}
+module.exports = {getUsers, add, getById, getBy, update, remove}
 
 function getUsers() {
     return db('users')
@@ -21,4 +21,23 @@ function getById(userId) {
 async function add(user) {
     const [id] = await db('users').insert(user, 'userId')
     return getById(id)
+}
+
+function update(id, changes) {
+    return db('users')
+        .where('userId', id)
+        .update(changes)
+        .then(count => {
+            return count > 0 ? getById(id) : null
+        })
+}
+
+async function remove(id) {
+    const rmvd = await getById(id)
+    return db('users')
+        .where('userId', id)
+        .del()
+        .then(() => {
+            return rmvd
+        })
 }
