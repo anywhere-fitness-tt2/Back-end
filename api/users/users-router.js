@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const Users = require('./users-model')
 const restricted = require('../middleware/restricted-middleware')
+const {valUserId} = require('../middleware/idValidation')
 
 router.get('/', restricted, (req, res) => {
     Users.getUsers()
@@ -10,46 +11,28 @@ router.get('/', restricted, (req, res) => {
         .catch(err => res.send(err))
 })
 
-router.get('/:id', restricted, (req, res) => {
-    Users.getById(req.params.id)
-        .then(user => {
-            res.json(user)
-        })
-        .catch(err => {
-            res.send(err.message)
-        })
+router.get('/:id', valUserId, restricted, (req, res) => {
+    res.status(200).json(req.user)
 })
 
-router.put('/:id', restricted, (req, res) => {
+router.put('/:id', valUserId, restricted, (req, res) => {
     const {id} = req.params
     const changes = req.body
-
-    Users.getById(id)
+    Users.update(id, changes)
         .then(user => {
-            if(user) {
-                return Users.update(id, changes)
-            } else {
-                res.status(404).json({ message: 'Could not find user with given id' })
-            }
-        })
-        .then(updatedUser => {
-            res.json(updatedUser)
-        })
-        .catch(err => {
-            res.status(500).json({ message: err.message })
-        })
+        res.status(200).json(user)
+    })
+    .catch(err => {
+        res.json(err.message)
+    })
 })
 
-router.delete('/:id', restricted, (req, res) => {
+router.delete('/:id', valUserId, restricted, (req, res) => {
     const {id} = req.params
 
     Users.remove(id)
         .then(deleted => {
-            if (deleted) {
-                res.json({removed: deleted})
-            } else {
-                res.status(404).json({message: 'Could not find user with given id'})
-            }
+            res.json({removed: deleted})
         })
         .catch(err => {
             res.status(500).json({message: err.message })
