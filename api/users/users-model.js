@@ -1,6 +1,6 @@
 const db = require('../../database/dbConfig')
 
-module.exports = {getUsers, add, getById, getBy, update, remove, getUserClasses}
+module.exports = {getUsers, add, getById, getBy, update, remove, getUserClasses, dropClass, enroll}
 
 function getUsers() {
     return db('users')
@@ -22,7 +22,7 @@ function getUserClasses(id) {
     return db('classes as c')
         .join('enrolled as e', 'c.classId', 'e.classId')
         .join('users as u', 'u.userId', 'e.userId')
-        .select('c.name', 'c.type', 'c.time', 'c.duration', 'c.intensityLvl', 'c.location')
+        .select('e.id','c.name', 'c.type', 'c.time', 'c.duration', 'c.intensityLvl', 'c.location')
         .where('u.userId', id)
 
 }
@@ -50,3 +50,14 @@ async function remove(id) {
             return rmvd
         })
 }
+
+async function enroll(body) {
+    return db('enrolled').insert(body)
+}
+
+async function dropClass(id) {
+    return db('enrolled')
+        .where('id', id)
+        .del()
+}
+

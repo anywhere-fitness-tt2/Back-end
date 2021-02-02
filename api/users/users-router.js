@@ -49,5 +49,28 @@ router.delete('/:id', valUserId, restricted, (req, res) => {
         })
 })
 
+router.post('/enrollment', restricted, (req, res) => {
+    req.body.userId = req.decodedJwt.subject
+    Users.enroll(req.body)
+        .then(enrolled => {
+            res.json('enrollment succesful')
+        })
+        .catch(err => {
+            res.json(err.message)
+        })
+})
+
+router.delete('/enrollment/:id', restricted, (req, res) => {
+    const {id} = req.params
+
+    Users.dropClass(id)
+        .then(deleted => {
+            res.json('Class was dropped')
+        })
+        .catch(err => {
+            res.status(500).json({message: err.message })
+        })
+})
+
 
 module.exports = router
