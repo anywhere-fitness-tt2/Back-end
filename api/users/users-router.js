@@ -15,6 +15,16 @@ router.get('/:id', valUserId, restricted, (req, res) => {
     res.status(200).json(req.user)
 })
 
+router.get('/:id/classes', valUserId, restricted, (req, res) => {
+    Users.getUserClasses(req.params.id)
+        .then(classes => {
+            res.json(classes)
+        })
+        .catch(err => {
+            res.status(500).json(err.message)
+        })
+})
+
 router.put('/:id', valUserId, restricted, (req, res) => {
     const {id} = req.params
     const changes = req.body

@@ -1,6 +1,6 @@
 const db = require('../../database/dbConfig')
 
-module.exports = {getUsers, add, getById, getBy, update, remove}
+module.exports = {getUsers, add, getById, getBy, update, remove, getUserClasses}
 
 function getUsers() {
     return db('users')
@@ -16,6 +16,15 @@ function getById(userId) {
         .select('u.userId', 'u.username', 'u.email', 'u.role')
         .where('u.userId', userId)
         .first()
+}
+
+function getUserClasses(id) {
+    return db('classes as c')
+        .join('enrolled as e', 'c.classId', 'e.classId')
+        .join('users as u', 'u.userId', 'e.userId')
+        .select('c.name', 'c.type', 'c.time', 'c.duration', 'c.intensityLvl', 'c.location')
+        .where('u.userId', id)
+
 }
 
 async function add(user) {

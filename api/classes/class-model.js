@@ -28,6 +28,7 @@ function getClassAttendees(id) {
         .where('c.classId', id)
         .where('role', 'student')
 }
+//returns instructors enrolled in class
 
 function getClassInstructors(id) {
     return db('classes as c')

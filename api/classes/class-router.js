@@ -18,7 +18,7 @@ router.get('/:id', valClassId, restricted, (req, res) => {
     res.status(200).json(req.cls)
 })
 
-router.get('/:id/enrolled', valClassId, restricted, (req, res) => {
+router.get('/:id/students', valClassId, restricted, (req, res) => {
     Classes.getClassAttendees(req.cls.classId)
         .then(students => {
             res.json(students)
