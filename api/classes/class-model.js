@@ -11,7 +11,22 @@ module.exports = {
 }
 
 function getClasses() {
-    return db('classes').orderBy('classes.classId')
+    return db('classes as c')
+    .join('enrolled as e', 'c.classId', 'e.classId')
+    .join('users as u', 'u.userId', 'e.userId')
+    .select(
+        'c.classId', 
+        'u.username',
+        'c.name',
+        'c.type',
+        'c.time',
+        'c.duration',
+        'c.intensityLvl',
+        'c.location',
+        'c.attendees',
+        'c.maxSize'
+    )
+    .where('u.role', 'instructor')
 }
 
 function getClassById(classId) {

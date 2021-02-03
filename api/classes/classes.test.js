@@ -62,8 +62,8 @@ describe('Class tests', () => {
     })
     // describe('Post class instructors', () => {
     //     it('adds new class', async () => {
-    //         let res = await request(server).post('/api/auth/login').send(kevin)
-    //         const {body} = await request(server).post('/api/classes/',).set('Authorization', `${res.body.token}`).send(newClass)
+    //         await request(server).post('/api/auth/login').send(kevin)
+    //         let body = await request(server).post('/api/classes/',).set("Authorization", body.token).send(newClass)
     //         expect(JSON.stringify(body)).toEqual(expect.stringMatching(/new class/i))
     //     })
     // })
