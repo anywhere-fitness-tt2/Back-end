@@ -1,6 +1,6 @@
 # Anywhere-Fitness
 ## Auth End-Points
-
+## Base Url: https://af-api-tt2.herokuapp.com/ 
 | AUTH | URL                | Requires                                  | Restrictions | Returns                                                 |
 |------|--------------------|-------------------------------------------|--------------|---------------------------------------------------------|
 | POST | /api/auth/register | -username<br>-email<br>-password<br>-role | None         | Newly created user with <br>auto-generated userId       |
