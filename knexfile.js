@@ -1,8 +1,3 @@
-require("dotenv").config();
-
-const pgConnection = process.env.DATABASE_URL || "postgresql://postgres@localhost/auth";
-
-
 module.exports = {
 
   development: {
@@ -21,10 +16,17 @@ module.exports = {
     },
     seeds: {
       directory: "./database/seeds"
-    }
+    },
   },
-
-
+  testing: {
+    client: 'sqlite3',
+    useNullAsDefault: true,
+    migrations: { directory: './database/migrations' },
+    seeds: { directory: './database/seeds' },
+    connection: {
+      filename: './database/test.db3',
+    },
+  },
   production: {
     client: "sqlite3",
     useNullAsDefault: true,

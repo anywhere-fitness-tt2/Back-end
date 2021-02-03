@@ -2,26 +2,26 @@ const router = require('express').Router()
 const bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const {jwtSecret} = require('../../config/secret')
-const {isValid} = require('../users/users-service')
+const {isRegisterValid, isLoginValid} = require('../users/users-service')
 const Users = require('../users/users-model')
 
 router.post('/register', (req, res) => {
     const credentials = req.body
     
-    if(isValid(credentials)) {
+    if(isRegisterValid(credentials)) {
         const rounds = process.env.BCRYPT_ROUNDS || 10
         const hash = bcryptjs.hashSync(credentials.password, rounds)
         credentials.password = hash
         Users.add(credentials)
-        .then(user => {
-            res.status(201).json(user);
-        })
-        .catch(error => {
-            res.status(500).json({ message: error.message });
-        });
+            .then(user => {
+                res.status(201).json(user);
+            })
+            .catch(error => {
+                res.status(500).json({message: 'User already exists'});
+            });
     } else {
         res.status(400).json({
-            message: "please provide username and password and the password shoud be alphanumeric",
+            message: "please provide username and password and the password shoud be alphanumeric"
         })
     }
 })
@@ -29,7 +29,7 @@ router.post('/register', (req, res) => {
 router.post('/login', (req, res) => {
     const {username, password} = req.body
 
-    if(isValid(req.body)) {
+    if(isLoginValid(req.body)) {
         Users.getBy({username: username})
             .then(([user]) => {
                 if (user && bcryptjs.compareSync(password, user.password)) {
