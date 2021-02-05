@@ -1,4 +1,10 @@
 # Anywhere-Fitness
+
+## Front-End:  
+https://github.com/anywhere-fitness-tt2/Front-end  
+
+## Deployed Site:  
+https://anywhere-fitness-tt2.vercel.app/  
 ## Auth End-Points
 ## Base Url: https://af-api-tt2.herokuapp.com/ 
 | AUTH | URL                | Requires                                  | Restrictions | Returns                                                 |
